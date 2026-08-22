@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import * as path from "path";
+import * as fs from "fs";
 import { execFileSync } from "child_process";
 import { parseProblemFolder } from "../src/lib/parser/problemParser.js";
 import { fileURLToPath } from "url";
@@ -12,6 +13,20 @@ const db = new PrismaClient();
 async function main() {
   console.log("🚀 Starting initial import via Git-Tree parser...");
   const srcRepoPath = path.resolve(__dirname, "../temp_leetcode_src");
+
+  let shouldCleanup = false;
+  if (!fs.existsSync(srcRepoPath)) {
+    console.log("📦 temp_leetcode_src not found. Cloning solutions repository temporarily...");
+    try {
+      execFileSync("git", ["-c", "http.sslVerify=false", "clone", "-n", "https://github.com/thunderrbox/LeetCode.git", srcRepoPath], {
+        stdio: "inherit"
+      });
+      shouldCleanup = true;
+    } catch (e) {
+      console.error("❌ Failed to clone solutions repository:", e.message || e);
+      process.exit(1);
+    }
+  }
 
   // Run git command to list all files checked in
   let filesList = [];
@@ -157,6 +172,16 @@ async function main() {
     failedFolders.forEach((f) => console.log(`  - ${f}`));
   }
   console.log("==============================================\n");
+
+  if (shouldCleanup) {
+    console.log("🧹 Cleaning up temporary solutions directory...");
+    try {
+      fs.rmSync(srcRepoPath, { recursive: true, force: true });
+      console.log("✅ Cleanup complete.");
+    } catch (e) {
+      console.warn("⚠️ Warning: Failed to clean up temp_leetcode_src directory automatically:", e.message || e);
+    }
+  }
 }
 
 main()

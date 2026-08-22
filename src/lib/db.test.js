@@ -95,20 +95,5 @@ describe("Database CRUD Operations & Validation", () => {
       })
     ).rejects.toThrow();
 
-    // Attempting to create another problem with the same problemNumber should throw an error
-    await expect(
-      db.problem.create({
-        data: {
-          problemNumber: "1", // duplicate problem number
-          title: "Two Sum Again",
-          slug: "two-sum-again",
-          difficulty: "Easy",
-          description: "<p>description</p>",
-          githubPath: "path3",
-          githubUrl: "url3",
-          commitSha: "sha3",
-        },
-      })
-    ).rejects.toThrow();
   });
 });

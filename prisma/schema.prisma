@@ -57,7 +57,7 @@ model Session {
 // Core Content Schemas
 model Problem {
   id             String     @id @default(cuid())
-  problemNumber  String     @unique // e.g. "1" or "Q1"
+  problemNumber  String // e.g. "1" or "Q1"
   title          String
   slug           String     @unique
   difficulty     String     // "Easy", "Medium", "Hard"
