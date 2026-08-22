@@ -1,0 +1,33 @@
+name: Sync Solutions with Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    name: Package and Push Changes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Fetch the last 2 commits to allow diff comparisons
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run Sync Push Script
+        env:
+          SYNC_URL: "https://yourdomain.com/api/sync/github" # Replace with your production domain!
+          SYNC_SECRET: ${{ secrets.SYNC_SECRET }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          # Download or run the sync script from the website repository
+          # To run, we can keep a copy of sync.py in the solutions repo, or curl it from the website repo:
+          curl -sS https://raw.githubusercontent.com/thunderrbox/DSA-Vault/main/scripts/sync.py -o sync.py
+          python sync.py

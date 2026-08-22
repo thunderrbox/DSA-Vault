@@ -1,0 +1,128 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// NextAuth Schemas
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  role          String     @default("USER") // SQLite doesn't support enums, using String
+  accounts      Account[]
+  sessions      Session[]
+  bookmarks     Bookmark[]
+  progress      Progress[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Core Content Schemas
+model Problem {
+  id             String     @id @default(cuid())
+  problemNumber  String     @unique // e.g. "1" or "Q1"
+  title          String
+  slug           String     @unique
+  difficulty     String     // "Easy", "Medium", "Hard"
+  description    String     // HTML representation
+  githubPath     String     // e.g. "Arrays/Two-Sum"
+  githubUrl      String     // Link to direct folder
+  leetcodeUrl    String?
+  commitSha      String
+  published      Boolean    @default(true)
+  solutions      Solution[]
+  tags           Tag[]      @relation("ProblemTags")
+  bookmarks      Bookmark[]
+  progress       Progress[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([problemNumber])
+  @@index([difficulty])
+}
+
+model Solution {
+  id           String   @id @default(cuid())
+  problemId    String
+  language     String   // "cpp", "mysql", "postgresql", "java"
+  filePath     String   // Path in github repo
+  codeContent  String
+  problem      Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  problems  Problem[] @relation("ProblemTags")
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  problemId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, problemId])
+}
+
+model Progress {
+  id        String   @id @default(cuid())
+  userId    String
+  problemId String
+  solved    Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, problemId])
+}
+
+model SyncEvent {
+  id          String   @id @default(cuid())
+  commitSha   String
+  status      String   // "SUCCESS" | "FAILED"
+  payload     String
+  errorMessage String?
+  createdAt   DateTime @default(now())
+}

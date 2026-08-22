@@ -1,0 +1,169 @@
+import { PrismaClient } from "@prisma/client";
+import * as path from "path";
+import { execFileSync } from "child_process";
+import { parseProblemFolder } from "../src/lib/parser/problemParser.js";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const db = new PrismaClient();
+
+async function main() {
+  console.log("🚀 Starting initial import via Git-Tree parser...");
+  const srcRepoPath = path.resolve(__dirname, "../temp_leetcode_src");
+
+  // Run git command to list all files checked in
+  let filesList = [];
+  try {
+    const stdout = execFileSync("git", ["ls-tree", "-r", "--name-only", "HEAD"], {
+      cwd: srcRepoPath,
+      encoding: "utf-8",
+    });
+    filesList = stdout.split(/\r?\n/).filter((f) => f.trim().length > 0);
+  } catch (error) {
+    const err = error;
+    console.error("❌ Failed to query git repository files:", err.message || err);
+    process.exit(1);
+  }
+
+  // Group files by parent directory
+  const folderFiles = {};
+  for (const filePath of filesList) {
+    if (filePath.includes("/")) {
+      const parts = filePath.split("/");
+      const folderName = parts[0];
+      const fileName = parts.slice(1).join("/");
+      
+      if (!folderFiles[folderName]) {
+        folderFiles[folderName] = [];
+      }
+      folderFiles[folderName].push({
+        name: fileName,
+        path: filePath,
+      });
+    }
+  }
+
+  const folders = Object.keys(folderFiles);
+  console.log(`📁 Found ${folders.length} problem folders in Git history.`);
+
+  let createdCount = 0;
+  let updatedCount = 0;
+  let failedCount = 0;
+  const failedFolders = [];
+
+  for (const folder of folders) {
+    try {
+      const gitFiles = folderFiles[folder];
+      const files = [];
+
+      for (const gitFile of gitFiles) {
+        // Read file content directly from git database
+        const content = execFileSync("git", ["show", `HEAD:${gitFile.path}`], {
+          cwd: srcRepoPath,
+          maxBuffer: 10 * 1024 * 1024,
+          encoding: "utf-8",
+        });
+        files.push({
+          name: gitFile.name,
+          content,
+        });
+      }
+
+      // Parse folder contents
+      const parsed = parseProblemFolder(folder, files);
+
+      // Check if problem already exists
+      const existingProblem = await db.problem.findUnique({
+        where: { slug: parsed.slug },
+      });
+
+      // Upsert tags
+      const tagConnections = [];
+      for (const tagName of parsed.tags) {
+        const tag = await db.tag.upsert({
+          where: { name: tagName },
+          update: {},
+          create: { name: tagName },
+        });
+        tagConnections.push({ id: tag.id });
+      }
+
+      const problemData = {
+        problemNumber: parsed.problemNumber,
+        title: parsed.title,
+        slug: parsed.slug,
+        difficulty: parsed.difficulty,
+        description: parsed.description,
+        githubPath: folder,
+        githubUrl: `https://github.com/thunderrbox/LeetCode/tree/main/${encodeURIComponent(folder)}`,
+        commitSha: "initial_import_sha",
+        tags: {
+          connect: tagConnections,
+        },
+      };
+
+      if (existingProblem) {
+        // Update problem
+        await db.problem.update({
+          where: { id: existingProblem.id },
+          data: {
+            ...problemData,
+            solutions: {
+              deleteMany: {},
+              create: parsed.solutions.map((sol) => ({
+                language: sol.language,
+                filePath: sol.filePath,
+                codeContent: sol.codeContent,
+              })),
+            },
+          },
+        });
+        updatedCount++;
+      } else {
+        // Create problem
+        await db.problem.create({
+          data: {
+            ...problemData,
+            solutions: {
+              create: parsed.solutions.map((sol) => ({
+                language: sol.language,
+                filePath: sol.filePath,
+                codeContent: sol.codeContent,
+              })),
+            },
+          },
+        });
+        createdCount++;
+      }
+    } catch (error) {
+      failedCount++;
+      failedFolders.push(folder);
+      const err = error;
+      console.error(`❌ Failed to import folder '${folder}':`, err.message || err);
+    }
+  }
+
+  console.log("\n==============================================");
+  console.log("🎉 Initial Import / Synchronization Report");
+  console.log("==============================================");
+  console.log(`... Total Folders Scanned: ${folders.length}`);
+  console.log(`... Created: ${createdCount}`);
+  console.log(`... Updated: ${updatedCount}`);
+  console.log(`... Failed: ${failedCount}`);
+  if (failedCount > 0) {
+    console.log("Folders that failed:");
+    failedFolders.forEach((f) => console.log(`  - ${f}`));
+  }
+  console.log("==============================================\n");
+}
+
+main()
+  .catch((e) => {
+    console.error("❌ Seeding failed with uncaught exception:", e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await db.$disconnect();
+  });
