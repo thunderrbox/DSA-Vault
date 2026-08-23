@@ -130,31 +130,37 @@ export default async function ProblemDetailPage({ params }) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative overflow-hidden bg-slate-50/50 dark:bg-[#0B0F19]">
+      {/* Background Decorative Gradients */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] pointer-events-none opacity-40 dark:opacity-20 z-0">
+        <div className="absolute top-[-10%] left-[10%] w-[300px] h-[300px] rounded-full bg-indigo-400 blur-[120px]" />
+        <div className="absolute top-[10%] right-[10%] w-[350px] h-[350px] rounded-full bg-violet-500 blur-[130px]" />
+      </div>
+
       <Header />
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex flex-col gap-8">
+      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 flex flex-col gap-10 relative z-10">
         {/* Breadcrumbs */}
-        <nav className="text-sm text-slate-500 flex items-center gap-1.5 font-medium">
-          <Link href="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+        <nav className="text-sm text-slate-550 dark:text-slate-450 flex items-center gap-1.5 font-bold">
+          <Link href="/" className="hover:text-indigo-650 dark:hover:text-indigo-400 transition-colors">
             Home
           </Link>
           <span>/</span>
-          <Link href="/problems" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          <Link href="/problems" className="hover:text-indigo-650 dark:hover:text-indigo-400 transition-colors">
             Problems
           </Link>
           <span>/</span>
-          <span className="text-slate-700 dark:text-slate-300 font-semibold line-clamp-1">
+          <span className="text-slate-800 dark:text-slate-300 font-extrabold line-clamp-1">
             {problem.title}
           </span>
         </nav>
 
         {/* Title Header */}
-        <section className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-6">
-          <div className="flex flex-col gap-2.5">
+        <section className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-200 dark:border-slate-800/80 pb-8">
+          <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <span
-                className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
+                className={`text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider border ${
                   problem.difficulty === "Easy"
                     ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-900/30"
                     : problem.difficulty === "Medium"
@@ -164,18 +170,18 @@ export default async function ProblemDetailPage({ params }) {
               >
                 {problem.difficulty}
               </span>
-              <span className="text-sm font-semibold font-mono text-slate-400">
+              <span className="text-sm font-bold font-mono text-slate-450 dark:text-slate-500">
                 LeetCode #{problem.problemNumber}
               </span>
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               {problem.title}
             </h1>
             <div className="flex flex-wrap gap-2 mt-1">
               {problem.tags.map((t) => (
                 <span
                   key={t.id}
-                  className="text-xs px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-md font-medium"
+                  className="text-xs px-2.5 py-1 bg-white/85 dark:bg-slate-800/80 text-slate-650 dark:text-slate-300 rounded-lg font-semibold border border-slate-200/50 dark:border-slate-700/30"
                 >
                   {t.name}
                 </span>
@@ -190,7 +196,7 @@ export default async function ProblemDetailPage({ params }) {
               href={problem.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/30 rounded-lg text-sm font-medium transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 hover:bg-slate-50 dark:hover:bg-slate-850 rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5 text-slate-750 dark:text-slate-350"
             >
               <Github size={14} />
               <span>GitHub Source</span>
@@ -199,7 +205,7 @@ export default async function ProblemDetailPage({ params }) {
               href={`https://leetcode.com/problems/${slug}/`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 bg-indigo-650 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5 shadow-md shadow-indigo-600/10"
             >
               <ExternalLink size={14} />
               <span>LeetCode Link</span>
@@ -208,21 +214,21 @@ export default async function ProblemDetailPage({ params }) {
         </section>
 
         {/* Content Layout: Description vs Code Viewer */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start">
           {/* Left panel: Description */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-800/50 pb-2">
+          <div className="lg:col-span-5 flex flex-col gap-6 bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md">
+            <h2 className="text-lg font-extrabold text-slate-950 dark:text-white border-b border-slate-200 dark:border-slate-800/50 pb-3 tracking-tight">
               Problem Description
             </h2>
             <div
-              className="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 text-sm leading-relaxed prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800"
+              className="prose dark:prose-invert max-w-none text-slate-650 dark:text-slate-350 text-sm leading-relaxed prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800 prose-code:font-semibold"
               dangerouslySetInnerHTML={{ __html: problem.description }}
             />
           </div>
 
           {/* Right panel: Solution Frame */}
-          <div className="lg:col-span-7 flex flex-col gap-6">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-800/50 pb-2">
+          <div className="lg:col-span-7 flex flex-col gap-6 bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md">
+            <h2 className="text-lg font-extrabold text-slate-950 dark:text-white border-b border-slate-200 dark:border-slate-800/50 pb-3 tracking-tight">
               Solutions & Implementation
             </h2>
             <SolutionViewer solutions={solutionsWithHighlight} />
@@ -234,14 +240,14 @@ export default async function ProblemDetailPage({ params }) {
           {prevProblem ? (
             <Link
               href={`/problems/${prevProblem.slug}`}
-              className="group flex items-center gap-2 text-left"
+              className="group flex items-center gap-3 text-left"
             >
-              <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/20 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+              <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-800 text-slate-500 border border-slate-200/50 dark:border-slate-700/30 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/20 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                 <ChevronLeft size={16} />
               </div>
               <div>
-                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Previous Problem</p>
-                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <p className="text-[10px] uppercase font-bold text-slate-450 dark:text-slate-500 tracking-wider">Previous Problem</p>
+                <p className="text-sm font-bold text-slate-800 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   #{prevProblem.problemNumber}. {prevProblem.title}
                 </p>
               </div>
@@ -253,15 +259,15 @@ export default async function ProblemDetailPage({ params }) {
           {nextProblem ? (
             <Link
               href={`/problems/${nextProblem.slug}`}
-              className="group flex items-center gap-2 text-right justify-end ml-auto"
+              className="group flex items-center gap-3 text-right justify-end ml-auto"
             >
               <div>
-                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Next Problem</p>
-                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <p className="text-[10px] uppercase font-bold text-slate-450 dark:text-slate-500 tracking-wider">Next Problem</p>
+                <p className="text-sm font-bold text-slate-800 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   #{nextProblem.problemNumber}. {nextProblem.title}
                 </p>
               </div>
-              <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/20 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+              <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-800 text-slate-500 border border-slate-200/50 dark:border-slate-700/30 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/20 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                 <ChevronRight size={16} />
               </div>
             </Link>
@@ -272,19 +278,33 @@ export default async function ProblemDetailPage({ params }) {
 
         {/* Related Problems (Recommendations) */}
         {relatedProblems.length > 0 && (
-          <section className="flex flex-col gap-4 mt-4">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Related Problems</h3>
+          <section className="flex flex-col gap-6 mt-4">
+            <h3 className="text-xl font-extrabold text-slate-950 dark:text-white tracking-tight">Related Problems</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {relatedProblems.map((p) => (
                 <Link
                   key={p.slug}
                   href={`/problems/${p.slug}`}
-                  className="bg-white dark:bg-[#161B2B] p-4 rounded-lg border border-slate-200 dark:border-slate-800/80 hover:border-indigo-500 dark:hover:border-indigo-500 transition-colors shadow-sm"
+                  className={`bg-white/70 dark:bg-[#161B2B]/60 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md flex flex-col gap-2 transition-all duration-200 hover:-translate-y-0.5 ${
+                    p.difficulty === "Easy"
+                      ? "border-l-4 border-l-emerald-500 hover:border-indigo-500/20"
+                      : p.difficulty === "Medium"
+                      ? "border-l-4 border-l-amber-500 hover:border-indigo-500/20"
+                      : "border-l-4 border-l-rose-500 hover:border-indigo-500/20"
+                  }`}
                 >
-                  <span className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border border-indigo-100 bg-indigo-50/20 text-indigo-600 dark:border-indigo-950 dark:bg-indigo-950/45 dark:text-indigo-400">
+                  <span
+                    className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider border self-start ${
+                      p.difficulty === "Easy"
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-900/30"
+                        : p.difficulty === "Medium"
+                        ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/20 dark:text-amber-400 dark:border-amber-900/30"
+                        : "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/20 dark:text-rose-400 dark:border-rose-900/30"
+                    }`}
+                  >
                     {p.difficulty}
                   </span>
-                  <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200 mt-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors line-clamp-1">
+                  <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200 mt-2 hover:text-indigo-650 dark:hover:text-indigo-400 transition-colors line-clamp-1">
                     {p.title}
                   </h4>
                 </Link>
