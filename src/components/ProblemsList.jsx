@@ -14,18 +14,39 @@ export default function ProblemsList({ initialProblems, availableTags }) {
   const [search, setSearch] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [sortBy, setSortBy] = useState("number");
+
+  // Dynamically extract all available languages from initialProblems
+  const availableLanguages = useMemo(() => {
+    const langs = new Set();
+    initialProblems.forEach((p) => {
+      p.solutions.forEach((s) => {
+        if (s.language) {
+          langs.add(s.language.toUpperCase());
+        }
+      });
+    });
+    // Ensure "JAVA" is always shown as an option even if not currently in DB
+    langs.add("JAVA");
+    langs.add("CPP");
+    langs.add("PYTHON");
+    langs.add("SQL");
+    return Array.from(langs).sort();
+  }, [initialProblems]);
 
   // 1. Initialize states from URL parameters on boot
   useEffect(() => {
     const urlSearch = searchParams.get("search") || "";
     const urlDiff = searchParams.get("difficulty");
     const urlTags = searchParams.get("tags");
+    const urlLangs = searchParams.get("languages");
     const urlSort = searchParams.get("sort");
 
     if (urlSearch) setSearch(urlSearch);
     if (urlDiff) setSelectedDifficulty(urlDiff.split(",").filter(Boolean));
     if (urlTags) setSelectedTags(urlTags.split(",").filter(Boolean));
+    if (urlLangs) setSelectedLanguages(urlLangs.split(",").filter(Boolean));
     if (urlSort && ["newest", "oldest", "number"].includes(urlSort)) {
       setSortBy(urlSort);
     }
@@ -36,12 +57,14 @@ export default function ProblemsList({ initialProblems, availableTags }) {
     currentSearch,
     currentDiff,
     currentTags,
-    currentSort
+    currentSort,
+    currentLangs
   ) => {
     const params = new URLSearchParams();
     if (currentSearch.trim()) params.set("search", currentSearch);
     if (currentDiff.length > 0) params.set("difficulty", currentDiff.join(","));
     if (currentTags.length > 0) params.set("tags", currentTags.join(","));
+    if (currentLangs.length > 0) params.set("languages", currentLangs.join(","));
     if (currentSort !== "number") params.set("sort", currentSort);
 
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
@@ -50,7 +73,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
   // Handle search text changes
   const handleSearchChange = (val) => {
     setSearch(val);
-    updateUrlParams(val, selectedDifficulty, selectedTags, sortBy);
+    updateUrlParams(val, selectedDifficulty, selectedTags, sortBy, selectedLanguages);
   };
 
   // Handle difficulty filter toggles
@@ -59,7 +82,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
       ? selectedDifficulty.filter((d) => d !== difficulty)
       : [...selectedDifficulty, difficulty];
     setSelectedDifficulty(nextDiff);
-    updateUrlParams(search, nextDiff, selectedTags, sortBy);
+    updateUrlParams(search, nextDiff, selectedTags, sortBy, selectedLanguages);
   };
 
   // Handle tag filter toggles
@@ -68,13 +91,22 @@ export default function ProblemsList({ initialProblems, availableTags }) {
       ? selectedTags.filter((t) => t !== tag)
       : [...selectedTags, tag];
     setSelectedTags(nextTags);
-    updateUrlParams(search, selectedDifficulty, nextTags, sortBy);
+    updateUrlParams(search, selectedDifficulty, nextTags, sortBy, selectedLanguages);
+  };
+
+  // Handle language filter toggles
+  const handleLanguageToggle = (lang) => {
+    const nextLangs = selectedLanguages.includes(lang)
+      ? selectedLanguages.filter((l) => l !== lang)
+      : [...selectedLanguages, lang];
+    setSelectedLanguages(nextLangs);
+    updateUrlParams(search, selectedDifficulty, selectedTags, sortBy, nextLangs);
   };
 
   // Handle sorting toggles
   const handleSortChange = (sort) => {
     setSortBy(sort);
-    updateUrlParams(search, selectedDifficulty, selectedTags, sort);
+    updateUrlParams(search, selectedDifficulty, selectedTags, sort, selectedLanguages);
   };
 
   // Clear all filters
@@ -82,6 +114,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
     setSearch("");
     setSelectedDifficulty([]);
     setSelectedTags([]);
+    setSelectedLanguages([]);
     setSortBy("number");
     router.replace(pathname, { scroll: false });
   };
@@ -113,7 +146,14 @@ export default function ProblemsList({ initialProblems, availableTags }) {
       );
     }
 
-    // 4. Sorting
+    // 4. Language Filter
+    if (selectedLanguages.length > 0) {
+      result = result.filter((p) =>
+        p.solutions.some((sol) => selectedLanguages.includes(sol.language.toUpperCase()))
+      );
+    }
+
+    // 5. Sorting
     result.sort((a, b) => {
       if (sortBy === "newest") {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -127,7 +167,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
     });
 
     return result;
-  }, [initialProblems, search, selectedDifficulty, selectedTags, sortBy]);
+  }, [initialProblems, search, selectedDifficulty, selectedTags, selectedLanguages, sortBy]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -138,7 +178,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
             <Filter size={16} />
             <span>Filters</span>
           </h2>
-          {(search || selectedDifficulty.length > 0 || selectedTags.length > 0 || sortBy !== "number") && (
+          {(search || selectedDifficulty.length > 0 || selectedTags.length > 0 || selectedLanguages.length > 0 || sortBy !== "number") && (
             <button
               onClick={clearFilters}
               className="text-xs flex items-center gap-1 text-teal-600 dark:text-teal-400 font-semibold hover:underline"
@@ -180,18 +220,43 @@ export default function ProblemsList({ initialProblems, availableTags }) {
           <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Difficulty</label>
           <div className="flex flex-col gap-1.5">
             {["Easy", "Medium", "Hard"].map((diff) => (
-              <label key={diff} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 cursor-pointer">
+              <label key={diff} className="flex items-center gap-2 text-sm text-slate-650 dark:text-slate-300 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={selectedDifficulty.includes(diff)}
                   onChange={() => handleDifficultyToggle(diff)}
-                  className="rounded border-slate-300 text-teal-600 focus:ring-teal-500 h-4 w-4"
+                  className="rounded border-slate-350 text-teal-600 focus:ring-teal-500 h-4 w-4"
                 />
                 <span>{diff}</span>
               </label>
             ))}
           </div>
         </div>
+
+        {/* Languages Filter */}
+        {availableLanguages.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Languages</label>
+            <div className="flex flex-wrap gap-1.5">
+              {availableLanguages.map((lang) => {
+                const selected = selectedLanguages.includes(lang);
+                return (
+                  <button
+                    key={lang}
+                    onClick={() => handleLanguageToggle(lang)}
+                    className={`text-xs px-2.5 py-1 rounded-md font-semibold border transition-all ${
+                      selected
+                        ? "bg-teal-50 text-teal-700 border-teal-350 dark:bg-teal-950/40 dark:text-teal-300 dark:border-teal-800"
+                        : "bg-white dark:bg-[#161B2B] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800/30"
+                    }`}
+                  >
+                    {lang}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Topics Filter */}
         <div className="flex flex-col gap-2">
@@ -219,8 +284,8 @@ export default function ProblemsList({ initialProblems, availableTags }) {
 
       {/* 2. Problems Listing Grid */}
       <main className="lg:col-span-3 flex flex-col gap-4">
-        <div className="flex justify-between items-center text-sm text-slate-500 dark:text-slate-400">
-          <p className="font-medium">Showing {filteredProblems.length} of {initialProblems.length} problems</p>
+        <div className="flex justify-between items-center text-sm text-slate-550 dark:text-slate-400">
+          <p className="font-semibold">Showing {filteredProblems.length} of {initialProblems.length} problems</p>
         </div>
 
         {filteredProblems.length > 0 ? (
@@ -250,7 +315,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                     >
                       {problem.difficulty}
                     </span>
-                    <span className="text-xs text-slate-400 dark:text-slate-500 font-semibold font-mono">
+                    <span className="text-xs text-slate-450 dark:text-slate-500 font-semibold font-mono">
                       #{problem.problemNumber}
                     </span>
                   </div>
@@ -263,7 +328,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                     {problem.tags.map((t) => (
                       <span
                         key={t.id}
-                        className="text-[10px] px-2.5 py-0.5 bg-slate-100 dark:bg-slate-800/80 text-slate-500 dark:text-slate-450 rounded-md font-semibold border border-slate-200/30 dark:border-slate-700/10"
+                        className="text-[10px] px-2.5 py-0.5 bg-slate-100 dark:bg-slate-800/80 text-slate-650 dark:text-slate-450 rounded-md font-semibold border border-slate-200/30 dark:border-slate-700/10"
                       >
                         {t.name}
                       </span>
@@ -272,9 +337,9 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                 </div>
 
                 <div className="flex items-center justify-between sm:justify-end gap-5 border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100 dark:border-slate-850">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-450 dark:text-slate-500">
                     <span className="font-semibold">Languages:</span>
-                    <span className="font-bold text-slate-600 dark:text-slate-300 font-mono uppercase">
+                    <span className="font-bold text-slate-600 dark:text-slate-350 font-mono uppercase">
                       {problem.solutions.map((s) => s.language).join(", ") || "None"}
                     </span>
                   </div>
@@ -284,11 +349,11 @@ export default function ProblemsList({ initialProblems, availableTags }) {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-900/10 flex flex-col items-center gap-3">
-            <p className="text-slate-400 dark:text-slate-500 text-base">No problems match your filter criteria.</p>
+          <div className="text-center py-16 border border-dashed border-slate-200 dark:border-slate-850 rounded-2xl bg-slate-50/50 dark:bg-slate-900/10 flex flex-col items-center gap-3">
+            <p className="text-slate-450 dark:text-slate-500 text-base font-semibold">No problems match your filter criteria.</p>
             <button
               onClick={clearFilters}
-              className="text-sm px-5 py-2.5 bg-slate-200 hover:bg-slate-350 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-semibold transition-colors"
+              className="text-sm px-5 py-2.5 bg-slate-200 hover:bg-slate-350 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-750 dark:text-slate-200 rounded-xl font-semibold transition-colors"
             >
               Clear Filters
             </button>

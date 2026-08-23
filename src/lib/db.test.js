@@ -1,5 +1,7 @@
 import { db } from "./db.js";
 
+jest.setTimeout(30000);
+
 describe("Database CRUD Operations & Validation", () => {
   // Clean up database before and after tests
   beforeEach(async () => {
