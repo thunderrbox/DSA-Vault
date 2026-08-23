@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { verifySignature } from "@/lib/security";
 import { parseProblemFolder } from "@/lib/parser/problemParser";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 
 const syncSecret = process.env.SYNC_SECRET;
 
@@ -215,6 +216,18 @@ export async function POST(request) {
       where: { id: syncEvent.id },
       data: { status: "SUCCESS" },
     });
+
+    // Revalidate Next.js cache so updates are instantly visible
+    try {
+      revalidatePath("/");
+      revalidatePath("/problems");
+      revalidatePath("/topics");
+      revalidatePath("/stats");
+      revalidatePath("/problems/[slug]", "page");
+      console.log("⚡ Instant cache revalidation triggered successfully");
+    } catch (e) {
+      console.warn("⚠️ Cache revalidation failed:", e.message || e);
+    }
 
     console.log(`✅ Sync complete. Created: ${createdCount}, Updated: ${updatedCount}, Deleted: ${deletedCount}`);
     return NextResponse.json({
