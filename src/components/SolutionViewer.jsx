@@ -39,7 +39,7 @@ export default function SolutionViewer({ solutions }) {
               onClick={() => setActiveIdx(idx)}
               className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors uppercase font-mono ${
                 activeIdx === idx
-                  ? "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border border-slate-200 dark:border-slate-700 shadow-sm"
+                  ? "bg-white dark:bg-slate-800 text-teal-600 dark:text-teal-400 border border-slate-200 dark:border-slate-700 shadow-sm"
                   : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
               }`}
             >
