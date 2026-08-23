@@ -33,3 +33,20 @@ pre::-webkit-scrollbar-thumb {
 pre::-webkit-scrollbar-thumb:hover {
   background: #4B5563;
 }
+
+/* Ensure images and tables inside problem descriptions are fully responsive */
+.prose img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 0.5rem;
+  margin: 1.5rem auto !important;
+  display: block;
+  background-color: white; /* In dark mode, light background helps read dark diagrams */
+  padding: 0.5rem;
+}
+.prose table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
