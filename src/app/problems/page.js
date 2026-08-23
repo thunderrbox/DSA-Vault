@@ -40,13 +40,21 @@ export default async function ProblemsPage() {
   }));
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative overflow-hidden bg-slate-50/50 dark:bg-[#0B0F19]">
+      {/* Background Decorative Gradients */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] pointer-events-none opacity-40 dark:opacity-20 z-0">
+        <div className="absolute top-[-10%] left-[10%] w-[300px] h-[300px] rounded-full bg-indigo-400 blur-[120px]" />
+        <div className="absolute top-[10%] right-[10%] w-[350px] h-[350px] rounded-full bg-violet-500 blur-[130px]" />
+      </div>
+
       <Header />
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-6">
+      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 flex flex-col gap-10 relative z-10">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">LeetCode & DSA Solutions</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">
+          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            LeetCode & DSA Solutions
+          </h1>
+          <p className="text-slate-650 dark:text-slate-400 mt-2 text-base sm:text-lg">
             Browse, search, and filter solved coding challenges.
           </p>
         </div>
