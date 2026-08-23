@@ -35,7 +35,7 @@ export default function GlobalError({ error, reset }) {
         <div className="flex items-center gap-4">
           <button
             onClick={() => reset()}
-            className="flex items-center gap-1.5 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors shadow-md shadow-indigo-600/10"
+            className="flex items-center gap-1.5 px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors shadow-md shadow-teal-600/10"
           >
             <RotateCcw size={16} />
             <span>Try Again</span>

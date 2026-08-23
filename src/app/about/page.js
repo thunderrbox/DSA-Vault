@@ -8,7 +8,7 @@ export default function AboutPage() {
     <div className="flex flex-col min-h-screen relative overflow-hidden bg-slate-50/50 dark:bg-[#0B0F19]">
       {/* Background Decorative Gradients */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] pointer-events-none opacity-40 dark:opacity-20 z-0">
-        <div className="absolute top-[-10%] left-[10%] w-[300px] h-[300px] rounded-full bg-indigo-400 blur-[120px]" />
+        <div className="absolute top-[-10%] left-[10%] w-[300px] h-[300px] rounded-full bg-teal-400 blur-[120px]" />
         <div className="absolute top-[10%] right-[10%] w-[350px] h-[350px] rounded-full bg-violet-500 blur-[130px]" />
       </div>
 
@@ -18,7 +18,7 @@ export default function AboutPage() {
         {/* Intro */}
         <section className="flex flex-col gap-4 text-center sm:text-left">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            About <span className="bg-gradient-to-r from-indigo-600 to-violet-500 dark:from-indigo-400 dark:to-pink-400 bg-clip-text text-transparent">DSA-Vault</span>
+            About <span className="bg-gradient-to-r from-teal-600 to-violet-500 dark:from-teal-400 dark:to-pink-400 bg-clip-text text-transparent">DSA-Vault</span>
           </h1>
           <p className="text-slate-700 dark:text-slate-350 text-lg sm:text-xl leading-relaxed mt-2 font-medium">
             DSA-Vault is an automated publishing engine and educational coding notebook designed to
@@ -32,15 +32,15 @@ export default function AboutPage() {
             <h3 className="font-extrabold text-xl sm:text-2xl text-slate-950 dark:text-white tracking-tight">The Automation Pipeline</h3>
             <p className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed mt-1">
               Unlike static blogs which require manual edits, metadata updates, and sitemap modifications,
-              DSA-Vault publishes solutions instantly on <code className="bg-indigo-50 dark:bg-indigo-950/60 px-1.5 py-0.5 rounded text-indigo-600 dark:text-indigo-400 font-mono text-xs font-semibold">git push</code>.
+              DSA-Vault publishes solutions instantly on <code className="bg-teal-50 dark:bg-teal-950/60 px-1.5 py-0.5 rounded text-teal-600 dark:text-teal-400 font-mono text-xs font-semibold">git push</code>.
             </p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-6 items-stretch mt-4">
             {/* Step 1 */}
-            <div className="flex-1 bg-white/90 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200/60 dark:border-slate-800/40 flex flex-col gap-3 transition-colors hover:border-indigo-500/20">
-              <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-sm">
-                <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center">
+            <div className="flex-1 bg-white/90 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200/60 dark:border-slate-800/40 flex flex-col gap-3 transition-colors hover:border-teal-500/20">
+              <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold text-sm">
+                <div className="w-8 h-8 rounded-lg bg-teal-50 dark:bg-teal-950/40 flex items-center justify-center">
                   <GitBranch size={16} />
                 </div>
                 <span>1. Push to GitHub</span>
@@ -52,9 +52,9 @@ export default function AboutPage() {
             </div>
 
             {/* Step 2 */}
-            <div className="flex-1 bg-white/90 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200/60 dark:border-slate-800/40 flex flex-col gap-3 transition-colors hover:border-indigo-500/20">
-              <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-sm">
-                <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center">
+            <div className="flex-1 bg-white/90 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200/60 dark:border-slate-800/40 flex flex-col gap-3 transition-colors hover:border-teal-500/20">
+              <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold text-sm">
+                <div className="w-8 h-8 rounded-lg bg-teal-50 dark:bg-teal-950/40 flex items-center justify-center">
                   <Settings size={16} />
                 </div>
                 <span>2. Webhook Triggers</span>
@@ -66,9 +66,9 @@ export default function AboutPage() {
             </div>
 
             {/* Step 3 */}
-            <div className="flex-1 bg-white/90 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200/60 dark:border-slate-800/40 flex flex-col gap-3 transition-colors hover:border-indigo-500/20">
-              <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-sm">
-                <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center">
+            <div className="flex-1 bg-white/90 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200/60 dark:border-slate-800/40 flex flex-col gap-3 transition-colors hover:border-teal-500/20">
+              <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold text-sm">
+                <div className="w-8 h-8 rounded-lg bg-teal-50 dark:bg-teal-950/40 flex items-center justify-center">
                   <Server size={16} />
                 </div>
                 <span>3. Ingest & Render</span>
@@ -87,7 +87,7 @@ export default function AboutPage() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="bg-white/70 dark:bg-[#161B2B]/60 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800/50 shadow-sm flex items-start gap-4">
-              <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
+              <div className="p-2.5 bg-teal-50 dark:bg-teal-950/30 text-teal-600 dark:text-teal-400 rounded-lg">
                 <Terminal size={20} />
               </div>
               <div>
@@ -99,7 +99,7 @@ export default function AboutPage() {
             </div>
 
             <div className="bg-white/70 dark:bg-[#161B2B]/60 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800/50 shadow-sm flex items-start gap-4">
-              <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
+              <div className="p-2.5 bg-teal-50 dark:bg-teal-950/30 text-teal-600 dark:text-teal-400 rounded-lg">
                 <Database size={20} />
               </div>
               <div>
@@ -111,7 +111,7 @@ export default function AboutPage() {
             </div>
 
             <div className="bg-white/70 dark:bg-[#161B2B]/60 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800/50 shadow-sm flex items-start gap-4">
-              <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
+              <div className="p-2.5 bg-teal-50 dark:bg-teal-950/30 text-teal-600 dark:text-teal-400 rounded-lg">
                 <ShieldAlert size={20} />
               </div>
               <div>
@@ -123,7 +123,7 @@ export default function AboutPage() {
             </div>
 
             <div className="bg-white/70 dark:bg-[#161B2B]/60 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800/50 shadow-sm flex items-start gap-4">
-              <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
+              <div className="p-2.5 bg-teal-50 dark:bg-teal-950/30 text-teal-600 dark:text-teal-400 rounded-lg">
                 <Cpu size={20} />
               </div>
               <div>

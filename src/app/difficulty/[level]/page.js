@@ -33,7 +33,7 @@ export default async function DifficultyDetailPage({ params }) {
         <div>
           <Link
             href="/problems"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline mb-4"
+            className="inline-flex items-center gap-1 text-sm font-semibold text-teal-600 dark:text-teal-400 hover:underline mb-4"
           >
             <ArrowLeft size={14} />
             <span>Back to problems</span>
@@ -50,7 +50,7 @@ export default async function DifficultyDetailPage({ params }) {
               <Link
                 key={problem.id}
                 href={`/problems/${problem.slug}`}
-                className="group bg-white dark:bg-[#161B2B] p-4 rounded-xl border border-slate-200 dark:border-slate-800/60 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-200 hover:border-indigo-500 dark:hover:border-indigo-500 hover:-translate-y-0.5"
+                className="group bg-white dark:bg-[#161B2B] p-4 rounded-xl border border-slate-200 dark:border-slate-800/60 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-200 hover:border-teal-500 dark:hover:border-teal-500 hover:-translate-y-0.5"
               >
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export default async function DifficultyDetailPage({ params }) {
                       #{problem.problemNumber}
                     </span>
                   </div>
-                  <h3 className="font-bold text-base sm:text-lg text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  <h3 className="font-bold text-base sm:text-lg text-slate-800 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                     {problem.title}
                   </h3>
                 </div>
@@ -80,7 +80,7 @@ export default async function DifficultyDetailPage({ params }) {
                       {problem.solutions.map((s) => s.language).join(", ") || "None"}
                     </span>
                   </span>
-                  <ChevronRight size={16} className="text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" />
+                  <ChevronRight size={16} className="text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 group-hover:translate-x-0.5 transition-all" />
                 </div>
               </Link>
             ))}

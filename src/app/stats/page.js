@@ -32,7 +32,7 @@ export default async function StatsPage() {
     <div className="flex flex-col min-h-screen relative overflow-hidden bg-slate-50/50 dark:bg-[#0B0F19]">
       {/* Background Decorative Gradients */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] pointer-events-none opacity-40 dark:opacity-20 z-0">
-        <div className="absolute top-[-10%] left-[15%] w-[300px] h-[300px] rounded-full bg-indigo-400 blur-[120px]" />
+        <div className="absolute top-[-10%] left-[15%] w-[300px] h-[300px] rounded-full bg-teal-400 blur-[120px]" />
         <div className="absolute top-[10%] right-[15%] w-[350px] h-[350px] rounded-full bg-violet-500 blur-[130px]" />
       </div>
 
@@ -51,8 +51,8 @@ export default async function StatsPage() {
         {/* Quick Stats Grid */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1 */}
-          <div className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md flex items-center gap-5 transition-all hover:border-indigo-500/25">
-            <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center">
+          <div className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md flex items-center gap-5 transition-all hover:border-teal-500/25">
+            <div className="w-12 h-12 bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 rounded-xl flex items-center justify-center">
               <Award size={24} />
             </div>
             <div>
@@ -62,8 +62,8 @@ export default async function StatsPage() {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md flex items-center gap-5 transition-all hover:border-indigo-500/25">
-            <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center">
+          <div className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md flex items-center gap-5 transition-all hover:border-teal-500/25">
+            <div className="w-12 h-12 bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 rounded-xl flex items-center justify-center">
               <Layers size={24} />
             </div>
             <div>
@@ -73,8 +73,8 @@ export default async function StatsPage() {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md flex items-center gap-5 transition-all hover:border-indigo-500/25">
-            <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center">
+          <div className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md flex items-center gap-5 transition-all hover:border-teal-500/25">
+            <div className="w-12 h-12 bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 rounded-xl flex items-center justify-center">
               <Code2 size={24} />
             </div>
             <div>
@@ -129,7 +129,7 @@ export default async function StatsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-extrabold text-lg sm:text-xl text-slate-950 dark:text-white tracking-tight flex items-center gap-2">
-                  <Activity size={20} className="text-indigo-600 dark:text-indigo-400" />
+                  <Activity size={20} className="text-teal-600 dark:text-teal-400" />
                   <span>Pipeline Sync Logs</span>
                 </h3>
                 <p className="text-xs text-slate-450 dark:text-slate-500 mt-0.5 font-medium">Observability into recent Git pushes.</p>
@@ -145,7 +145,7 @@ export default async function StatsPage() {
                 {syncLogs.map((log) => (
                   <div
                     key={log.id}
-                    className="p-4 bg-white/95 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800/40 rounded-xl flex flex-col gap-2 transition-colors hover:border-indigo-500/25"
+                    className="p-4 bg-white/95 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800/40 rounded-xl flex flex-col gap-2 transition-colors hover:border-teal-500/25"
                   >
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-mono text-slate-500 dark:text-slate-400 font-semibold select-all">

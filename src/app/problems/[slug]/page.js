@@ -133,7 +133,7 @@ export default async function ProblemDetailPage({ params }) {
     <div className="flex flex-col min-h-screen relative overflow-hidden bg-slate-50/50 dark:bg-[#0B0F19]">
       {/* Background Decorative Gradients */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] pointer-events-none opacity-40 dark:opacity-20 z-0">
-        <div className="absolute top-[-10%] left-[10%] w-[300px] h-[300px] rounded-full bg-indigo-400 blur-[120px]" />
+        <div className="absolute top-[-10%] left-[10%] w-[300px] h-[300px] rounded-full bg-teal-400 blur-[120px]" />
         <div className="absolute top-[10%] right-[10%] w-[350px] h-[350px] rounded-full bg-violet-500 blur-[130px]" />
       </div>
 
@@ -142,11 +142,11 @@ export default async function ProblemDetailPage({ params }) {
       <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 flex flex-col gap-10 relative z-10">
         {/* Breadcrumbs */}
         <nav className="text-sm text-slate-550 dark:text-slate-450 flex items-center gap-1.5 font-bold">
-          <Link href="/" className="hover:text-indigo-650 dark:hover:text-indigo-400 transition-colors">
+          <Link href="/" className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
             Home
           </Link>
           <span>/</span>
-          <Link href="/problems" className="hover:text-indigo-650 dark:hover:text-indigo-400 transition-colors">
+          <Link href="/problems" className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
             Problems
           </Link>
           <span>/</span>
@@ -205,7 +205,7 @@ export default async function ProblemDetailPage({ params }) {
               href={`https://leetcode.com/problems/${slug}/`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-4 py-2 bg-indigo-650 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5 shadow-md shadow-indigo-600/10"
+              className="flex items-center gap-1.5 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5 shadow-md shadow-teal-600/10"
             >
               <ExternalLink size={14} />
               <span>LeetCode Link</span>
@@ -242,12 +242,12 @@ export default async function ProblemDetailPage({ params }) {
               href={`/problems/${prevProblem.slug}`}
               className="group flex items-center gap-3 text-left"
             >
-              <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-800 text-slate-500 border border-slate-200/50 dark:border-slate-700/30 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/20 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+              <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-800 text-slate-500 border border-slate-200/50 dark:border-slate-700/30 group-hover:bg-teal-50 dark:group-hover:bg-teal-950/20 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                 <ChevronLeft size={16} />
               </div>
               <div>
                 <p className="text-[10px] uppercase font-bold text-slate-450 dark:text-slate-500 tracking-wider">Previous Problem</p>
-                <p className="text-sm font-bold text-slate-800 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <p className="text-sm font-bold text-slate-800 dark:text-slate-300 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                   #{prevProblem.problemNumber}. {prevProblem.title}
                 </p>
               </div>
@@ -263,11 +263,11 @@ export default async function ProblemDetailPage({ params }) {
             >
               <div>
                 <p className="text-[10px] uppercase font-bold text-slate-450 dark:text-slate-500 tracking-wider">Next Problem</p>
-                <p className="text-sm font-bold text-slate-800 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <p className="text-sm font-bold text-slate-800 dark:text-slate-300 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                   #{nextProblem.problemNumber}. {nextProblem.title}
                 </p>
               </div>
-              <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-800 text-slate-500 border border-slate-200/50 dark:border-slate-700/30 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/20 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+              <div className="p-2.5 rounded-xl bg-white/80 dark:bg-slate-800 text-slate-500 border border-slate-200/50 dark:border-slate-700/30 group-hover:bg-teal-50 dark:group-hover:bg-teal-950/20 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                 <ChevronRight size={16} />
               </div>
             </Link>
@@ -287,10 +287,10 @@ export default async function ProblemDetailPage({ params }) {
                   href={`/problems/${p.slug}`}
                   className={`bg-white/70 dark:bg-[#161B2B]/60 p-5 rounded-xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md flex flex-col gap-2 transition-all duration-200 hover:-translate-y-0.5 ${
                     p.difficulty === "Easy"
-                      ? "border-l-4 border-l-emerald-500 hover:border-indigo-500/20"
+                      ? "border-l-4 border-l-emerald-500 hover:border-teal-500/20"
                       : p.difficulty === "Medium"
-                      ? "border-l-4 border-l-amber-500 hover:border-indigo-500/20"
-                      : "border-l-4 border-l-rose-500 hover:border-indigo-500/20"
+                      ? "border-l-4 border-l-amber-500 hover:border-teal-500/20"
+                      : "border-l-4 border-l-rose-500 hover:border-teal-500/20"
                   }`}
                 >
                   <span
@@ -304,7 +304,7 @@ export default async function ProblemDetailPage({ params }) {
                   >
                     {p.difficulty}
                   </span>
-                  <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200 mt-2 hover:text-indigo-650 dark:hover:text-indigo-400 transition-colors line-clamp-1">
+                  <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200 mt-2 hover:text-teal-600 dark:hover:text-teal-400 transition-colors line-clamp-1">
                     {p.title}
                   </h4>
                 </Link>

@@ -35,7 +35,7 @@ export default async function TopicDetailPage({ params }) {
     <div className="flex flex-col min-h-screen relative overflow-hidden bg-slate-50/50 dark:bg-[#0B0F19]">
       {/* Background Decorative Gradients */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] pointer-events-none opacity-40 dark:opacity-20 z-0">
-        <div className="absolute top-[-10%] left-[10%] w-[300px] h-[300px] rounded-full bg-indigo-400 blur-[120px]" />
+        <div className="absolute top-[-10%] left-[10%] w-[300px] h-[300px] rounded-full bg-teal-400 blur-[120px]" />
         <div className="absolute top-[10%] right-[10%] w-[350px] h-[350px] rounded-full bg-violet-500 blur-[130px]" />
       </div>
 
@@ -45,7 +45,7 @@ export default async function TopicDetailPage({ params }) {
         <div>
           <Link
             href="/topics"
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 mb-4 transition-colors group"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 mb-4 transition-colors group"
           >
             <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
             <span>Back to topics</span>
@@ -66,10 +66,10 @@ export default async function TopicDetailPage({ params }) {
                 href={`/problems/${problem.slug}`}
                 className={`group bg-white dark:bg-[#161B2B] p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-200 hover:-translate-y-0.5 ${
                   problem.difficulty === "Easy"
-                    ? "border-l-4 border-l-emerald-500 hover:border-l-emerald-500 hover:border-indigo-500/20"
+                    ? "border-l-4 border-l-emerald-500 hover:border-l-emerald-500 hover:border-teal-500/20"
                     : problem.difficulty === "Medium"
-                    ? "border-l-4 border-l-amber-500 hover:border-l-amber-500 hover:border-indigo-500/20"
-                    : "border-l-4 border-l-rose-500 hover:border-l-rose-500 hover:border-indigo-500/20"
+                    ? "border-l-4 border-l-amber-500 hover:border-l-amber-500 hover:border-teal-500/20"
+                    : "border-l-4 border-l-rose-500 hover:border-l-rose-500 hover:border-teal-500/20"
                 }`}
               >
                 <div className="flex flex-col gap-2">
@@ -89,7 +89,7 @@ export default async function TopicDetailPage({ params }) {
                       #{problem.problemNumber}
                     </span>
                   </div>
-                  <h3 className="font-extrabold text-lg text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors tracking-tight">
+                  <h3 className="font-extrabold text-lg text-slate-900 dark:text-slate-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
                     {problem.title}
                   </h3>
                 </div>
@@ -100,7 +100,7 @@ export default async function TopicDetailPage({ params }) {
                       {problem.solutions.map((s) => s.language).join(", ") || "None"}
                     </span>
                   </span>
-                  <ChevronRight size={18} className="text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all" />
+                  <ChevronRight size={18} className="text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
             ))}

@@ -43,14 +43,14 @@ export default async function Home() {
       <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 flex flex-col gap-20 md:gap-28 relative z-10">
         {/* 1. Hero Section */}
         <FadeIn className="text-center max-w-3xl mx-auto flex flex-col gap-6 items-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50/80 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-900/30 backdrop-blur-sm animate-pulse">
-            <Award size={12} className="text-indigo-600 dark:text-indigo-400" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-teal-50/80 text-teal-750 dark:bg-teal-950/40 dark:text-teal-300 border border-teal-200/60 dark:border-teal-900/30 backdrop-blur-sm animate-pulse">
+            <Award size={12} className="text-teal-650 dark:text-teal-400" />
             <span>Continuous SDE Learning Journal</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] text-slate-900 dark:text-white">
             Every Problem I Solve.
-            <span className="block mt-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-500 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+            <span className="block mt-2 bg-gradient-to-r from-teal-600 via-cyan-500 to-emerald-500 dark:from-teal-400 dark:via-cyan-400 dark:to-emerald-450 bg-clip-text text-transparent">
               A Searchable DSA Notebook.
             </span>
           </h1>
@@ -63,7 +63,7 @@ export default async function Home() {
           <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full sm:w-auto">
             <Link
               href="/problems"
-              className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-indigo-600/20 hover:shadow-indigo-600/35 hover:-translate-y-0.5 text-base"
+              className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-teal-600 to-cyan-650 hover:from-teal-700 hover:to-cyan-700 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-teal-600/20 hover:shadow-teal-600/35 hover:-translate-y-0.5 text-base"
             >
               <span>Explore Solutions</span>
               <ArrowRight size={18} />
@@ -81,8 +81,8 @@ export default async function Home() {
 
         {/* 2. Database Stats Section */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          <HoverScale className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md shadow-slate-100/50 dark:shadow-none backdrop-blur-md flex flex-col gap-3 cursor-default transition-all hover:border-indigo-500/30">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+          <HoverScale className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md shadow-slate-100/50 dark:shadow-none backdrop-blur-md flex flex-col gap-3 cursor-default transition-all hover:border-teal-500/30">
+            <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/40 flex items-center justify-center text-teal-600 dark:text-teal-400">
               <BookOpen size={20} />
             </div>
             <div>
@@ -91,8 +91,8 @@ export default async function Home() {
             </div>
           </HoverScale>
           
-          <HoverScale className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md shadow-slate-100/50 dark:shadow-none backdrop-blur-md flex flex-col gap-3 cursor-default transition-all hover:border-indigo-500/30">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+          <HoverScale className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md shadow-slate-100/50 dark:shadow-none backdrop-blur-md flex flex-col gap-3 cursor-default transition-all hover:border-teal-500/30">
+            <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/40 flex items-center justify-center text-teal-600 dark:text-teal-400">
               <Layers size={20} />
             </div>
             <div>
@@ -101,8 +101,8 @@ export default async function Home() {
             </div>
           </HoverScale>
 
-          <HoverScale className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md shadow-slate-100/50 dark:shadow-none backdrop-blur-md flex flex-col gap-3 cursor-default transition-all hover:border-indigo-500/30">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+          <HoverScale className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md shadow-slate-100/50 dark:shadow-none backdrop-blur-md flex flex-col gap-3 cursor-default transition-all hover:border-teal-500/30">
+            <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/40 flex items-center justify-center text-teal-600 dark:text-teal-400">
               <Calendar size={20} />
             </div>
             <div>
@@ -111,8 +111,8 @@ export default async function Home() {
             </div>
           </HoverScale>
 
-          <HoverScale className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md shadow-slate-100/50 dark:shadow-none backdrop-blur-md flex flex-col gap-3 cursor-default transition-all hover:border-indigo-500/30">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+          <HoverScale className="bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md shadow-slate-100/50 dark:shadow-none backdrop-blur-md flex flex-col gap-3 cursor-default transition-all hover:border-teal-500/30">
+            <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/40 flex items-center justify-center text-teal-600 dark:text-teal-400">
               <CheckCircle2 size={20} />
             </div>
             <div>
@@ -136,7 +136,7 @@ export default async function Home() {
           >
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 tracking-widest uppercase">
+                <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 tracking-widest uppercase">
                   Latest Published Solution
                 </span>
                 {latestProblem && (
@@ -163,7 +163,7 @@ export default async function Home() {
                     {latestProblem.tags.map((t) => (
                       <span
                         key={t.id}
-                        className="text-xs px-2.5 py-1 bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 rounded-lg font-medium border border-slate-200/50 dark:border-slate-700/30"
+                        className="text-xs px-2.5 py-1 bg-slate-100 dark:bg-slate-800/80 text-slate-650 dark:text-slate-300 rounded-lg font-medium border border-slate-200/50 dark:border-slate-700/30"
                       >
                         {t.name}
                       </span>
@@ -183,7 +183,7 @@ export default async function Home() {
               <div className="mt-4 border-t border-slate-100 dark:border-slate-800/60 pt-4 flex">
                 <Link
                   href={`/problems/${latestProblem.slug}`}
-                  className="inline-flex items-center gap-2 text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 group"
+                  className="inline-flex items-center gap-2 text-sm font-bold text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 group"
                 >
                   <span>View Full Approach & Code</span>
                   <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />

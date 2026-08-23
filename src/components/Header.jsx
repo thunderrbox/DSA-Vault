@@ -32,13 +32,13 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xl tracking-tight">
+          <Link href="/" className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold text-xl tracking-tight">
             <Image
               src="/logo.jpg"
               alt="DSA-Vault Logo"
               width={26}
               height={26}
-              className="rounded"
+              className="rounded border border-teal-500/20"
             />
             <span>DSA-Vault</span>
           </Link>
@@ -50,9 +50,9 @@ export default function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className={`text-sm font-semibold transition-all duration-200 px-3.5 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-indigo-600 dark:hover:text-indigo-400 ${
+              className={`text-sm font-semibold transition-all duration-200 px-3.5 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-teal-600 dark:hover:text-teal-400 ${
                 isActive(item.href)
-                  ? "text-indigo-650 dark:text-indigo-400 bg-indigo-50/60 dark:bg-indigo-950/40 border-b-2 border-indigo-600 dark:border-indigo-450"
+                  ? "text-teal-650 dark:text-teal-450 bg-teal-50/60 dark:bg-teal-950/40 border-b-2 border-teal-600 dark:border-teal-450"
                   : "text-slate-600 dark:text-slate-350"
               }`}
             >
@@ -74,10 +74,10 @@ export default function Header() {
                   width={34}
                   height={34}
                   unoptimized
-                  className="w-8.5 h-8.5 rounded-full border-2 border-indigo-500/20"
+                  className="w-8.5 h-8.5 rounded-full border-2 border-teal-500/20"
                 />
               ) : (
-                <div className="w-8.5 h-8.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300 flex items-center justify-center text-sm font-bold">
+                <div className="w-8.5 h-8.5 rounded-full bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300 flex items-center justify-center text-sm font-bold">
                   {session.user?.name?.[0] || "U"}
                 </div>
               )}
@@ -92,7 +92,7 @@ export default function Header() {
           ) : (
             <button
               onClick={() => signIn("google")}
-              className="flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl text-sm font-semibold transition-all duration-200 shadow-md shadow-indigo-600/10 hover:shadow-indigo-600/20 hover:-translate-y-0.5"
+              className="flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white rounded-xl text-sm font-semibold transition-all duration-200 shadow-md shadow-teal-600/10 hover:shadow-teal-600/20 hover:-translate-y-0.5"
             >
               <LogIn size={14} />
               <span>Sign In</span>
@@ -121,10 +121,10 @@ export default function Header() {
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3 py-2 rounded-lg text-base font-medium transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-indigo-600 dark:hover:text-indigo-400 ${
+                className={`px-3 py-2 rounded-lg text-base font-medium transition-colors hover:bg-slate-55/60 dark:hover:bg-slate-800/50 hover:text-teal-600 dark:hover:text-teal-400 ${
                   isActive(item.href)
-                    ? "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400"
-                    : "text-slate-600 dark:text-slate-300"
+                    ? "bg-teal-50 dark:bg-teal-950/30 text-teal-600 dark:text-teal-400"
+                    : "text-slate-650 dark:text-slate-300"
                 }`}
               >
                 {item.name}
@@ -142,7 +142,7 @@ export default function Header() {
                     width={40}
                     height={40}
                     unoptimized
-                    className="w-10 h-10 rounded-full border border-slate-300 dark:border-slate-700"
+                    className="w-10 h-10 rounded-full border border-slate-300 dark:border-slate-750"
                   />
                 )}
                 <div>
@@ -151,7 +151,7 @@ export default function Header() {
                 </div>
               </div>
             ) : (
-              <span className="text-sm text-slate-500">Sign in to track progress</span>
+              <span className="text-sm text-slate-500 font-medium">Sign in to track progress</span>
             )}
 
             {session ? (
@@ -171,7 +171,7 @@ export default function Header() {
                   signIn("google");
                   setMobileMenuOpen(false);
                 }}
-                className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+                className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white rounded-lg text-sm font-medium transition-colors"
               >
                 <LogIn size={14} />
                 <span>Sign In</span>

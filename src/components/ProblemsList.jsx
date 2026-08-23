@@ -141,7 +141,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
           {(search || selectedDifficulty.length > 0 || selectedTags.length > 0 || sortBy !== "number") && (
             <button
               onClick={clearFilters}
-              className="text-xs flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
+              className="text-xs flex items-center gap-1 text-teal-600 dark:text-teal-400 font-semibold hover:underline"
             >
               <RefreshCw size={10} />
               <span>Reset</span>
@@ -157,7 +157,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
             placeholder="Search problems or tags..."
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#161B2B] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+            className="w-full pl-9 pr-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#161B2B] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow"
           />
         </div>
 
@@ -167,7 +167,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
           <select
             value={sortBy}
             onChange={(e) => handleSortChange(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#161B2B] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#161B2B] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
           >
             <option value="number">Problem Number</option>
             <option value="newest">Recently Solved</option>
@@ -185,7 +185,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                   type="checkbox"
                   checked={selectedDifficulty.includes(diff)}
                   onChange={() => handleDifficultyToggle(diff)}
-                  className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 h-4 w-4"
+                  className="rounded border-slate-300 text-teal-600 focus:ring-teal-500 h-4 w-4"
                 />
                 <span>{diff}</span>
               </label>
@@ -205,7 +205,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                   onClick={() => handleTagToggle(tag)}
                   className={`text-xs px-2.5 py-1 rounded-md font-medium border transition-colors ${
                     selected
-                      ? "bg-indigo-50 text-indigo-700 border-indigo-300 dark:bg-indigo-950/40 dark:text-indigo-300 dark:border-indigo-800"
+                      ? "bg-teal-50 text-teal-700 border-teal-300 dark:bg-teal-950/40 dark:text-teal-300 dark:border-teal-800"
                       : "bg-white dark:bg-[#161B2B] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800/30"
                   }`}
                 >
@@ -231,10 +231,10 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                 href={`/problems/${problem.slug}`}
                 className={`group bg-white dark:bg-[#161B2B] p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-200 hover:-translate-y-0.5 ${
                   problem.difficulty === "Easy"
-                    ? "border-l-4 border-l-emerald-500 hover:border-l-emerald-500 hover:border-indigo-500/20"
+                    ? "border-l-4 border-l-emerald-500 hover:border-l-emerald-500 hover:border-teal-500/20"
                     : problem.difficulty === "Medium"
-                    ? "border-l-4 border-l-amber-500 hover:border-l-amber-500 hover:border-indigo-500/20"
-                    : "border-l-4 border-l-rose-500 hover:border-l-rose-500 hover:border-indigo-500/20"
+                    ? "border-l-4 border-l-amber-500 hover:border-l-amber-500 hover:border-teal-500/20"
+                    : "border-l-4 border-l-rose-500 hover:border-l-rose-500 hover:border-teal-500/20"
                 }`}
               >
                 <div className="flex flex-col gap-2">
@@ -255,7 +255,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                     </span>
                   </div>
 
-                  <h3 className="font-extrabold text-lg text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors tracking-tight">
+                  <h3 className="font-extrabold text-lg text-slate-900 dark:text-slate-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
                     {problem.title}
                   </h3>
 
@@ -278,7 +278,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                       {problem.solutions.map((s) => s.language).join(", ") || "None"}
                     </span>
                   </div>
-                  <ChevronRight size={18} className="text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all" />
+                  <ChevronRight size={18} className="text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
             ))}

@@ -48,7 +48,7 @@ export default async function DashboardPage() {
               className="w-16 h-16 rounded-full border border-slate-300 dark:border-slate-700"
             />
           ) : (
-            <div className="w-16 h-16 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300 flex items-center justify-center text-2xl font-semibold">
+            <div className="w-16 h-16 rounded-full bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300 flex items-center justify-center text-2xl font-semibold">
               {session.user.name?.[0] || "U"}
             </div>
           )}
@@ -109,7 +109,7 @@ export default async function DashboardPage() {
                   <div className="border-t border-slate-100 dark:border-slate-800/80 pt-4 flex items-center justify-between">
                     <Link
                       href={`/problems/${problem.slug}`}
-                      className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
+                      className="inline-flex items-center gap-1 text-sm font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300"
                     >
                       <span>Review approach</span>
                       <ArrowRight size={14} />
@@ -123,7 +123,7 @@ export default async function DashboardPage() {
               <p className="text-slate-400">No starred problems in your catalog yet.</p>
               <Link
                 href="/problems"
-                className="inline-flex items-center gap-1.5 text-sm text-indigo-600 dark:text-indigo-400 font-semibold hover:underline mt-2"
+                className="inline-flex items-center gap-1.5 text-sm text-teal-600 dark:text-teal-400 font-semibold hover:underline mt-2"
               >
                 <span>Browse solutions catalog</span>
                 <ArrowRight size={14} />
