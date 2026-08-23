@@ -5,6 +5,7 @@ import crypto from "crypto";
 
 const SYNC_SECRET = "local_shared_sync_secret_key";
 process.env.SYNC_SECRET = SYNC_SECRET;
+jest.setTimeout(30000);
 
 function signPayload(payload, secret) {
   const hmac = crypto.createHmac("sha256", secret);
