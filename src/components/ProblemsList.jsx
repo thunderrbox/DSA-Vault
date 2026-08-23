@@ -219,22 +219,28 @@ export default function ProblemsList({ initialProblems, availableTags }) {
 
       {/* 2. Problems Listing Grid */}
       <main className="lg:col-span-3 flex flex-col gap-4">
-        <div className="flex justify-between items-center text-sm text-slate-500">
-          <p>Showing {filteredProblems.length} of {initialProblems.length} problems</p>
+        <div className="flex justify-between items-center text-sm text-slate-500 dark:text-slate-400">
+          <p className="font-medium">Showing {filteredProblems.length} of {initialProblems.length} problems</p>
         </div>
 
         {filteredProblems.length > 0 ? (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {filteredProblems.map((problem) => (
               <Link
                 key={problem.id}
                 href={`/problems/${problem.slug}`}
-                className="group bg-white dark:bg-[#161B2B] p-4 sm:p-5 rounded-xl border border-slate-200 dark:border-slate-800/60 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-200 hover:border-indigo-500 dark:hover:border-indigo-500 hover:-translate-y-0.5"
+                className={`group bg-white dark:bg-[#161B2B] p-5 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-200 hover:-translate-y-0.5 ${
+                  problem.difficulty === "Easy"
+                    ? "border-l-4 border-l-emerald-500 hover:border-l-emerald-500 hover:border-indigo-500/20"
+                    : problem.difficulty === "Medium"
+                    ? "border-l-4 border-l-amber-500 hover:border-l-amber-500 hover:border-indigo-500/20"
+                    : "border-l-4 border-l-rose-500 hover:border-l-rose-500 hover:border-indigo-500/20"
+                }`}
               >
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
+                      className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
                         problem.difficulty === "Easy"
                           ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-900/30"
                           : problem.difficulty === "Medium"
@@ -244,12 +250,12 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                     >
                       {problem.difficulty}
                     </span>
-                    <span className="text-xs text-slate-400 font-semibold font-mono">
+                    <span className="text-xs text-slate-400 dark:text-slate-500 font-semibold font-mono">
                       #{problem.problemNumber}
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  <h3 className="font-extrabold text-lg text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors tracking-tight">
                     {problem.title}
                   </h3>
 
@@ -257,7 +263,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                     {problem.tags.map((t) => (
                       <span
                         key={t.id}
-                        className="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-md font-medium"
+                        className="text-[10px] px-2.5 py-0.5 bg-slate-100 dark:bg-slate-800/80 text-slate-500 dark:text-slate-450 rounded-md font-semibold border border-slate-200/30 dark:border-slate-700/10"
                       >
                         {t.name}
                       </span>
@@ -265,10 +271,10 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100 dark:border-slate-800">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                    <span className="font-medium">Languages:</span>
-                    <span className="font-semibold text-slate-600 dark:text-slate-300 font-mono uppercase">
+                <div className="flex items-center justify-between sm:justify-end gap-5 border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100 dark:border-slate-850">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
+                    <span className="font-semibold">Languages:</span>
+                    <span className="font-bold text-slate-600 dark:text-slate-300 font-mono uppercase">
                       {problem.solutions.map((s) => s.language).join(", ") || "None"}
                     </span>
                   </div>
@@ -278,11 +284,11 @@ export default function ProblemsList({ initialProblems, availableTags }) {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 border border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50/50 dark:bg-slate-900/10 flex flex-col items-center gap-3">
-            <p className="text-slate-400 text-base">No problems match your filter criteria.</p>
+          <div className="text-center py-16 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-900/10 flex flex-col items-center gap-3">
+            <p className="text-slate-400 dark:text-slate-500 text-base">No problems match your filter criteria.</p>
             <button
               onClick={clearFilters}
-              className="text-sm px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg font-medium transition-colors"
+              className="text-sm px-5 py-2.5 bg-slate-200 hover:bg-slate-350 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-semibold transition-colors"
             >
               Clear Filters
             </button>
