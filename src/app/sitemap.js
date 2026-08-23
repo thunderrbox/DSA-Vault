@@ -21,32 +21,38 @@ export default async function sitemap() {
     priority: 0.6,
   }));
 
-  // Fetch problems for sitemap
-  const problems = await db.problem.findMany({
-    select: { slug: true, updatedAt: true },
-  });
+  // Fetch problems and tags for sitemap (wrapped in try/catch to avoid build errors if database is not reachable at build-time)
+  let problemRoutes = [];
+  let topicRoutes = [];
 
-  const problemRoutes = problems.map((problem) => ({
-    url: `${baseUrl}/problems/${problem.slug}`,
-    lastModified: problem.updatedAt,
-    changeFrequency: "weekly",
-    priority: 0.7,
-  }));
+  try {
+    const problems = await db.problem.findMany({
+      select: { slug: true, updatedAt: true },
+    });
 
-  // Fetch tags for topics sitemap
-  const tags = await db.tag.findMany({
-    select: { name: true },
-  });
-
-  const topicRoutes = tags.map((tag) => {
-    const slug = tag.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    return {
-      url: `${baseUrl}/topics/${slug}`,
-      lastModified: new Date(),
+    problemRoutes = problems.map((problem) => ({
+      url: `${baseUrl}/problems/${problem.slug}`,
+      lastModified: problem.updatedAt,
       changeFrequency: "weekly",
-      priority: 0.5,
-    };
-  });
+      priority: 0.7,
+    }));
+
+    const tags = await db.tag.findMany({
+      select: { name: true },
+    });
+
+    topicRoutes = tags.map((tag) => {
+      const slug = tag.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      return {
+        url: `${baseUrl}/topics/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.5,
+      };
+    });
+  } catch (error) {
+    console.warn("⚠️ Failed to fetch dynamic database routes for sitemap during build:", error.message || error);
+  }
 
   return [...staticRoutes, ...difficultyRoutes, ...problemRoutes, ...topicRoutes];
 }
