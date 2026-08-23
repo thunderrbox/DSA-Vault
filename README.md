@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌌 DSA-Vault
 
-## Getting Started
+DSA-Vault is a high-performance, automated publishing engine and educational coding notebook designed to showcase a continuous journal of software engineering problem-solving. It dynamically synchronizes solutions from a GitHub repository (`LeetCode`) and renders them in a state-of-the-art, fully searchable database portfolio.
 
-First, run the development server:
+Live Production URL: **[https://ubiquitous-dango-feef0b.netlify.app](https://ubiquitous-dango-feef0b.netlify.app)**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🌟 Key Features
+
+* **⚡ Real-Time Synchronizer Webhook**: Instantly ingests new solution pushes from GitHub, parsing Markdown descriptions, mapping complexity difficulty, and compiling code content into a Neon PostgreSQL database.
+* **🌀 Instant Next.js Cache Revalidation**: Webhook triggers automatic Next.js `revalidatePath()` calls to immediately clear page caches on ingestion, making new solutions visible instantly.
+* **🎨 Premium UI/UX Design System**: High-contrast, responsive visual interface featuring custom radial gradients, glassmorphism cards, interactive difficulty indicators, and modern pill-style navigation.
+* **🏷️ Smart DSA Filters**: Categorize, sort, and search problems by name, topic tags, or exact LeetCode problem numbers (supports `#` prefixes).
+* **💻 Dynamic Language Support**: Automatic detection and selection tabs for C++, Java, Python, and SQL with custom server-side Shiki syntax highlighting.
+* **🔍 Search Engine & AI Agent Optimization**: Embedded dynamic `@graph` schemas mapping `TechArticle` and `SoftwareSourceCode` items for Google Rich Snippet indexing and AI search agent scraping (ChatGPT/Claude bot-friendly).
+* **🌓 Seamless Theme Toggling**: Class-based light and dark phase layouts configured natively with Tailwind CSS and local storage persistency.
+
+---
+
+## 🛠️ Tech Stack
+
+* **Frontend**: Next.js 16 (App Router), React, Tailwind CSS, Lucide Icons, Framer Motion
+* **Database & ORM**: PostgreSQL (hosted on Neon serverless), Prisma ORM
+* **Authentication**: NextAuth.js with Google OAuth 2.0
+* **Syntax Highlighting**: Shiki (Server-side compilation)
+
+---
+
+## ⚙️ Project Pipeline Ingestion Workflow
+
+```mermaid
+graph TD
+    A[Push C++/Java solution files to thunderrbox/LeetCode] -->|GitHub Actions Hook| B(Webhook Post to Ingestion API)
+    B -->|HMAC-SHA256 Signature Check| C[Parse Markdown descriptions and source files]
+    C -->|Prisma Ingest & Upsert| D[(Neon PostgreSQL Database)]
+    D -->|Instantly Trigger revalidatePath| E[Rebuild Next.js HTML Static Cache]
+    E -->|Deploy Update| F[Live Site Display]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Environment Variables
 
-## Learn More
+Create a `.env` file in the root of the project directory and configure the following variables:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+DATABASE_URL="postgresql://neondb_owner:...@..."
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-jwt-auth-secret-key"
+SYNC_SECRET="your-shared-webhook-secret-hmac-key"
+GITHUB_REPOSITORY="thunderrbox/LeetCode"
+NEXT_PUBLIC_SITE_URL="https://ubiquitous-dango-feef0b.netlify.app"
+GOOGLE_CLIENT_ID="your-google-oauth-client-id"
+GOOGLE_CLIENT_SECRET="your-google-oauth-client-secret"
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Development Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Install dependencies
+npm install
 
-## Deploy on Vercel
+# Generate Prisma Client
+npx prisma generate
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Sync migrations
+npx prisma db push
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Start local server
+npm run dev
+```
+
+### 3. Run Test Suites
+
+```bash
+# Execute Jest unit tests
+npm run test
+```
+
+---
+
+## 🔒 Security & Operations
+
+* **Webhook Protection**: Incoming sync requests are authenticated using HMAC-SHA256 encryption. Payloads must contain the `X-Hub-Signature-256` header signed with your shared `SYNC_SECRET` key.
+* **OAuth Integrity**: Authenticated user session tokens are stored in secure HTTP-Only cookies to protect against XSS vectors.
