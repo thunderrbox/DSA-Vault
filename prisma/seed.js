@@ -10,6 +10,17 @@ const __dirname = path.dirname(__filename);
 
 const db = new PrismaClient();
 
+async function retry(fn, retries = 3, delay = 1000) {
+  try {
+    return await fn();
+  } catch (error) {
+    if (retries <= 0) throw error;
+    console.warn(`⚠️ Database query failed, retrying in ${delay}ms... (${retries} attempts left). Error: ${error.message || error}`);
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    return retry(fn, retries - 1, delay * 2);
+  }
+}
+
 async function main() {
   console.log("🚀 Starting initial import via Git-Tree parser...");
   const srcRepoPath = path.resolve(__dirname, "../temp_leetcode_src");
@@ -90,18 +101,18 @@ async function main() {
       const parsed = parseProblemFolder(folder, files);
 
       // Check if problem already exists
-      const existingProblem = await db.problem.findUnique({
+      const existingProblem = await retry(() => db.problem.findUnique({
         where: { slug: parsed.slug },
-      });
+      }));
 
       // Upsert tags
       const tagConnections = [];
       for (const tagName of parsed.tags) {
-        const tag = await db.tag.upsert({
+        const tag = await retry(() => db.tag.upsert({
           where: { name: tagName },
           update: {},
           create: { name: tagName },
-        });
+        }));
         tagConnections.push({ id: tag.id });
       }
 
@@ -121,7 +132,7 @@ async function main() {
 
       if (existingProblem) {
         // Update problem
-        await db.problem.update({
+        await retry(() => db.problem.update({
           where: { id: existingProblem.id },
           data: {
             ...problemData,
@@ -134,11 +145,11 @@ async function main() {
               })),
             },
           },
-        });
+        }));
         updatedCount++;
       } else {
         // Create problem
-        await db.problem.create({
+        await retry(() => db.problem.create({
           data: {
             ...problemData,
             solutions: {
@@ -149,7 +160,7 @@ async function main() {
               })),
             },
           },
-        });
+        }));
         createdCount++;
       }
     } catch (error) {
@@ -158,6 +169,7 @@ async function main() {
       const err = error;
       console.error(`❌ Failed to import folder '${folder}':`, err.message || err);
     }
+    await new Promise((resolve) => setTimeout(resolve, 200));
   }
 
   console.log("\n==============================================");
