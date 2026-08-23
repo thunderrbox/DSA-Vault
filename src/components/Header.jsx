@@ -45,15 +45,15 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-2">
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className={`text-sm font-medium transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 ${
+              className={`text-sm font-semibold transition-all duration-200 px-3.5 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-indigo-600 dark:hover:text-indigo-400 ${
                 isActive(item.href)
-                  ? "text-indigo-600 dark:text-indigo-400"
-                  : "text-slate-600 dark:text-slate-300"
+                  ? "text-indigo-650 dark:text-indigo-400 bg-indigo-50/60 dark:bg-indigo-950/40 border-b-2 border-indigo-600 dark:border-indigo-450"
+                  : "text-slate-600 dark:text-slate-350"
               }`}
             >
               {item.name}
@@ -71,19 +71,19 @@ export default function Header() {
                 <Image
                   src={session.user.image}
                   alt={session.user.name || "User avatar"}
-                  width={32}
-                  height={32}
+                  width={34}
+                  height={34}
                   unoptimized
-                  className="w-8 h-8 rounded-full border border-slate-300 dark:border-slate-700"
+                  className="w-8.5 h-8.5 rounded-full border-2 border-indigo-500/20"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300 flex items-center justify-center text-sm font-semibold">
+                <div className="w-8.5 h-8.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300 flex items-center justify-center text-sm font-bold">
                   {session.user?.name?.[0] || "U"}
                 </div>
               )}
               <button
                 onClick={() => signOut()}
-                className="flex items-center gap-1.5 px-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                className="flex items-center gap-1.5 px-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
               >
                 <LogOut size={14} />
                 <span>Sign Out</span>
@@ -92,7 +92,7 @@ export default function Header() {
           ) : (
             <button
               onClick={() => signIn("google")}
-              className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm shadow-indigo-600/10"
+              className="flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl text-sm font-semibold transition-all duration-200 shadow-md shadow-indigo-600/10 hover:shadow-indigo-600/20 hover:-translate-y-0.5"
             >
               <LogIn size={14} />
               <span>Sign In</span>
