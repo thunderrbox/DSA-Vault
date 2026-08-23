@@ -1,6 +1,7 @@
 [build]
   command = "prisma generate && next build"
   publish = ".next"
+  SECRETS_SCAN_OMIT_KEYS = ["DATABASE_URL", "NEXTAUTH_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "SYNC_SECRET"]
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
