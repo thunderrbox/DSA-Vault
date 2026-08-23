@@ -3,7 +3,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Search, ChevronRight, Filter, RefreshCw } from "lucide-react";
+import { Search, ChevronRight, Filter, RefreshCw, ChevronLeft, ChevronsLeft, ChevronsRight } from "lucide-react";
+
+const ITEMS_PER_PAGE = 15;
 
 export default function ProblemsList({ initialProblems, availableTags }) {
   const router = useRouter();
@@ -16,6 +18,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [sortBy, setSortBy] = useState("number");
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Dynamically extract all available languages from initialProblems
   const availableLanguages = useMemo(() => {
@@ -27,7 +30,6 @@ export default function ProblemsList({ initialProblems, availableTags }) {
         }
       });
     });
-    // Ensure "JAVA" is always shown as an option even if not currently in DB
     langs.add("JAVA");
     langs.add("CPP");
     langs.add("PYTHON");
@@ -42,6 +44,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
     const urlTags = searchParams.get("tags");
     const urlLangs = searchParams.get("languages");
     const urlSort = searchParams.get("sort");
+    const urlPage = parseInt(searchParams.get("page")) || 1;
 
     if (urlSearch) setSearch(urlSearch);
     if (urlDiff) setSelectedDifficulty(urlDiff.split(",").filter(Boolean));
@@ -50,6 +53,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
     if (urlSort && ["newest", "oldest", "number"].includes(urlSort)) {
       setSortBy(urlSort);
     }
+    if (urlPage) setCurrentPage(urlPage);
   }, [searchParams]);
 
   // 2. Synchronize state modifications back to the URL query parameters
@@ -58,7 +62,8 @@ export default function ProblemsList({ initialProblems, availableTags }) {
     currentDiff,
     currentTags,
     currentSort,
-    currentLangs
+    currentLangs,
+    currentPageNum
   ) => {
     const params = new URLSearchParams();
     if (currentSearch.trim()) params.set("search", currentSearch);
@@ -66,14 +71,21 @@ export default function ProblemsList({ initialProblems, availableTags }) {
     if (currentTags.length > 0) params.set("tags", currentTags.join(","));
     if (currentLangs.length > 0) params.set("languages", currentLangs.join(","));
     if (currentSort !== "number") params.set("sort", currentSort);
+    if (currentPageNum > 1) params.set("page", currentPageNum.toString());
 
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  // Reset page when filters change
+  const handleFilterChange = (newSearch, newDiff, newTags, newSort, newLangs) => {
+    setCurrentPage(1);
+    updateUrlParams(newSearch, newDiff, newTags, newSort, newLangs, 1);
   };
 
   // Handle search text changes
   const handleSearchChange = (val) => {
     setSearch(val);
-    updateUrlParams(val, selectedDifficulty, selectedTags, sortBy, selectedLanguages);
+    handleFilterChange(val, selectedDifficulty, selectedTags, sortBy, selectedLanguages);
   };
 
   // Handle difficulty filter toggles
@@ -82,7 +94,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
       ? selectedDifficulty.filter((d) => d !== difficulty)
       : [...selectedDifficulty, difficulty];
     setSelectedDifficulty(nextDiff);
-    updateUrlParams(search, nextDiff, selectedTags, sortBy, selectedLanguages);
+    handleFilterChange(search, nextDiff, selectedTags, sortBy, selectedLanguages);
   };
 
   // Handle tag filter toggles
@@ -91,7 +103,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
       ? selectedTags.filter((t) => t !== tag)
       : [...selectedTags, tag];
     setSelectedTags(nextTags);
-    updateUrlParams(search, selectedDifficulty, nextTags, sortBy, selectedLanguages);
+    handleFilterChange(search, selectedDifficulty, nextTags, sortBy, selectedLanguages);
   };
 
   // Handle language filter toggles
@@ -100,13 +112,21 @@ export default function ProblemsList({ initialProblems, availableTags }) {
       ? selectedLanguages.filter((l) => l !== lang)
       : [...selectedLanguages, lang];
     setSelectedLanguages(nextLangs);
-    updateUrlParams(search, selectedDifficulty, selectedTags, sortBy, nextLangs);
+    handleFilterChange(search, selectedDifficulty, selectedTags, sortBy, nextLangs);
   };
 
   // Handle sorting toggles
   const handleSortChange = (sort) => {
     setSortBy(sort);
-    updateUrlParams(search, selectedDifficulty, selectedTags, sort, selectedLanguages);
+    handleFilterChange(search, selectedDifficulty, selectedTags, sort, selectedLanguages);
+  };
+
+  // Handle page pagination clicks
+  const handlePageChange = (pageNum) => {
+    setCurrentPage(pageNum);
+    updateUrlParams(search, selectedDifficulty, selectedTags, sortBy, selectedLanguages, pageNum);
+    // Smooth scroll page back to top of main area
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // Clear all filters
@@ -116,6 +136,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
     setSelectedTags([]);
     setSelectedLanguages([]);
     setSortBy("number");
+    setCurrentPage(1);
     router.replace(pathname, { scroll: false });
   };
 
@@ -123,13 +144,14 @@ export default function ProblemsList({ initialProblems, availableTags }) {
   const filteredProblems = useMemo(() => {
     let result = [...initialProblems];
 
-    // 1. Text Search Filter
+    // 1. Text Search Filter (supports names and question numbers e.g. "1" or "#1")
     if (search.trim()) {
-      const query = search.toLowerCase();
+      const query = search.toLowerCase().replace(/^#/, "").trim();
       result = result.filter(
         (p) =>
           p.title.toLowerCase().includes(query) ||
-          p.problemNumber.includes(query) ||
+          p.problemNumber.toLowerCase() === query ||
+          p.problemNumber.toLowerCase().includes(query) ||
           p.tags.some((t) => t.name.toLowerCase().includes(query))
       );
     }
@@ -169,6 +191,15 @@ export default function ProblemsList({ initialProblems, availableTags }) {
     return result;
   }, [initialProblems, search, selectedDifficulty, selectedTags, selectedLanguages, sortBy]);
 
+  // Calculate pagination bounds
+  const totalPages = Math.ceil(filteredProblems.length / ITEMS_PER_PAGE) || 1;
+  const activePage = Math.min(currentPage, totalPages);
+
+  const paginatedProblems = useMemo(() => {
+    const startIdx = (activePage - 1) * ITEMS_PER_PAGE;
+    return filteredProblems.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+  }, [filteredProblems, activePage]);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
       {/* 1. Sidebar Filters */}
@@ -194,7 +225,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Search problems or tags..."
+            placeholder="Search by name, tags or #no..."
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
             className="w-full pl-9 pr-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#161B2B] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition-shadow"
@@ -283,14 +314,16 @@ export default function ProblemsList({ initialProblems, availableTags }) {
       </aside>
 
       {/* 2. Problems Listing Grid */}
-      <main className="lg:col-span-3 flex flex-col gap-4">
+      <main className="lg:col-span-3 flex flex-col gap-6">
         <div className="flex justify-between items-center text-sm text-slate-550 dark:text-slate-400">
-          <p className="font-semibold">Showing {filteredProblems.length} of {initialProblems.length} problems</p>
+          <p className="font-semibold">
+            Showing {Math.min(filteredProblems.length, (activePage - 1) * ITEMS_PER_PAGE + 1)}-{Math.min(filteredProblems.length, activePage * ITEMS_PER_PAGE)} of {filteredProblems.length} problems
+          </p>
         </div>
 
-        {filteredProblems.length > 0 ? (
+        {paginatedProblems.length > 0 ? (
           <div className="flex flex-col gap-4">
-            {filteredProblems.map((problem) => (
+            {paginatedProblems.map((problem) => (
               <Link
                 key={problem.id}
                 href={`/problems/${problem.slug}`}
@@ -310,7 +343,7 @@ export default function ProblemsList({ initialProblems, availableTags }) {
                           ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-900/30"
                           : problem.difficulty === "Medium"
                           ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/20 dark:text-amber-400 dark:border-amber-900/30"
-                          : "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/20 dark:text-rose-400 dark:border-rose-900/30"
+                          : "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/20 dark:text-rose-450 dark:border-rose-900/30"
                       }`}
                     >
                       {problem.difficulty}
@@ -350,12 +383,81 @@ export default function ProblemsList({ initialProblems, availableTags }) {
           </div>
         ) : (
           <div className="text-center py-16 border border-dashed border-slate-200 dark:border-slate-850 rounded-2xl bg-slate-50/50 dark:bg-slate-900/10 flex flex-col items-center gap-3">
-            <p className="text-slate-450 dark:text-slate-500 text-base font-semibold">No problems match your filter criteria.</p>
+            <p className="text-slate-455 dark:text-slate-500 text-base font-semibold">No problems match your filter criteria.</p>
             <button
               onClick={clearFilters}
               className="text-sm px-5 py-2.5 bg-slate-200 hover:bg-slate-350 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-750 dark:text-slate-200 rounded-xl font-semibold transition-colors"
             >
               Clear Filters
+            </button>
+          </div>
+        )}
+
+        {/* 3. Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 mt-8 py-4 border-t border-slate-200/60 dark:border-slate-800/40">
+            {/* First Page */}
+            <button
+              disabled={activePage === 1}
+              onClick={() => handlePageChange(1)}
+              className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+              aria-label="First page"
+            >
+              <ChevronsLeft size={16} />
+            </button>
+
+            {/* Prev Page */}
+            <button
+              disabled={activePage === 1}
+              onClick={() => handlePageChange(activePage - 1)}
+              className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+              aria-label="Previous page"
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            {/* Page Numbers Indicator */}
+            <div className="flex items-center gap-1.5 px-3">
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((p) => Math.abs(p - activePage) <= 2 || p === 1 || p === totalPages)
+                .map((p, idx, arr) => {
+                  const showEllipsis = idx > 0 && p - arr[idx - 1] > 1;
+                  return (
+                    <React.Fragment key={p}>
+                      {showEllipsis && <span className="text-slate-400 text-xs px-1">...</span>}
+                      <button
+                        onClick={() => handlePageChange(p)}
+                        className={`w-9 h-9 rounded-lg text-xs font-bold transition-all ${
+                          activePage === p
+                            ? "bg-teal-500 text-white shadow-md shadow-teal-500/20"
+                            : "border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40"
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    </React.Fragment>
+                  );
+                })}
+            </div>
+
+            {/* Next Page */}
+            <button
+              disabled={activePage === totalPages}
+              onClick={() => handlePageChange(activePage + 1)}
+              className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+              aria-label="Next page"
+            >
+              <ChevronRight size={16} />
+            </button>
+
+            {/* Last Page */}
+            <button
+              disabled={activePage === totalPages}
+              onClick={() => handlePageChange(totalPages)}
+              className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+              aria-label="Last page"
+            >
+              <ChevronsRight size={16} />
             </button>
           </div>
         )}
