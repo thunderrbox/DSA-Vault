@@ -25,20 +25,22 @@ export async function generateMetadata({ params }) {
     };
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ubiquitous-dango-feef0b.netlify.app";
+  const absoluteUrl = `${baseUrl}/problems/${problem.slug}`;
   const title = `${problem.title} — LeetCode #${problem.problemNumber} Solution | Abhijeet`;
-  const description = `Detailed explanation, approach, and optimized C++/SQL/Java code solution for LeetCode #${problem.problemNumber}: ${problem.title}.`;
+  const description = `Detailed explanation, complexity analysis, and optimized C++/Java/Python/SQL source code solution for LeetCode #${problem.problemNumber}: ${problem.title}.`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: `/problems/${problem.slug}`,
+      canonical: absoluteUrl,
     },
     openGraph: {
       title,
       description,
       type: "article",
-      url: `/problems/${problem.slug}`,
+      url: absoluteUrl,
     },
   };
 }
@@ -112,21 +114,44 @@ export default async function ProblemDetailPage({ params }) {
   );
 
   // 5. Generate JSON-LD Structured Data Schema
-  const baseUrl = process.env.NEXTAUTH_URL || "https://dsa-vault.vercel.app";
+  const finalBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ubiquitous-dango-feef0b.netlify.app";
+  const absoluteUrl = `${finalBaseUrl}/problems/${problem.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "headline": `${problem.title} — LeetCode #${problem.problemNumber} Solution`,
-    "description": `Detailed explanation and optimized source code implementation for LeetCode #${problem.problemNumber}: ${problem.title}.`,
-    "articleSection": problem.tags.map((t) => t.name).join(", "),
-    "author": {
-      "@type": "Person",
-      "name": "Abhijeet",
-    },
-    "dateCreated": problem.createdAt.toISOString(),
-    "dateModified": problem.updatedAt.toISOString(),
-    "url": `${baseUrl}/problems/${problem.slug}`,
-    "mainEntityOfPage": `${baseUrl}/problems/${problem.slug}`,
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": `${absoluteUrl}#article`,
+        "headline": `${problem.title} — LeetCode #${problem.problemNumber} Solution & Explanation`,
+        "description": `Detailed explanation, complexity analysis, and clean source code solutions for LeetCode #${problem.problemNumber}: ${problem.title}.`,
+        "inLanguage": "en",
+        "mainEntityOfPage": absoluteUrl,
+        "url": absoluteUrl,
+        "dateCreated": problem.createdAt.toISOString(),
+        "dateModified": problem.updatedAt.toISOString(),
+        "author": {
+          "@type": "Person",
+          "name": "Abhijeet Singh Rana",
+        },
+        "about": problem.tags.map((t) => ({
+          "@type": "Thing",
+          "name": t.name,
+        })),
+      },
+      ...problem.solutions.map((sol) => ({
+        "@type": "SoftwareSourceCode",
+        "@id": `${absoluteUrl}#code-${sol.language.toLowerCase()}`,
+        "name": `${problem.title} ${sol.language.toUpperCase()} Solution`,
+        "programmingLanguage": sol.language.toLowerCase(),
+        "codeSampleType": "full solution",
+        "text": sol.codeContent,
+        "codeRepository": problem.githubUrl,
+        "author": {
+          "@type": "Person",
+          "name": "Abhijeet Singh Rana",
+        },
+      })),
+    ],
   };
 
   return (
