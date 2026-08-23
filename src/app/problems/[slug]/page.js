@@ -241,18 +241,18 @@ export default async function ProblemDetailPage({ params }) {
         {/* Content Layout: Description vs Code Viewer */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start">
           {/* Left panel: Description */}
-          <div className="lg:col-span-5 flex flex-col gap-6 bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md">
+          <div className="lg:col-span-5 flex flex-col gap-6 bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md overflow-hidden">
             <h2 className="text-lg font-extrabold text-slate-950 dark:text-white border-b border-slate-200 dark:border-slate-800/50 pb-3 tracking-tight">
               Problem Description
             </h2>
             <div
-              className="prose dark:prose-invert max-w-none text-slate-650 dark:text-slate-350 text-sm leading-relaxed prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800 prose-code:font-semibold"
+              className="prose dark:prose-invert max-w-none text-slate-655 dark:text-slate-350 text-sm leading-relaxed prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800 prose-code:font-semibold"
               dangerouslySetInnerHTML={{ __html: problem.description }}
             />
           </div>
 
           {/* Right panel: Solution Frame */}
-          <div className="lg:col-span-7 flex flex-col gap-6 bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md">
+          <div className="lg:col-span-7 flex flex-col gap-6 bg-white/70 dark:bg-[#161B2B]/60 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/60 shadow-md backdrop-blur-md overflow-hidden">
             <h2 className="text-lg font-extrabold text-slate-950 dark:text-white border-b border-slate-200 dark:border-slate-800/50 pb-3 tracking-tight">
               Solutions & Implementation
             </h2>
