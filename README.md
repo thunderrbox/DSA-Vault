@@ -1,5 +1,10 @@
 # 🌌 DSA-Vault
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Problems%20Solved-66-blue?style=for-the-badge&logo=leetcode&logoColor=white">
+  <img src="https://img.shields.io/badge/Pipeline-Active-brightgreen?style=for-the-badge">
+</p>
+
 DSA-Vault is a high-performance, automated publishing engine and educational coding notebook designed to showcase a continuous journal of software engineering problem-solving. It dynamically synchronizes solutions from a GitHub repository (`LeetCode`) and renders them in a state-of-the-art, fully searchable database portfolio.
 
 Live Production URL: **[https://ubiquitous-dango-feef0b.netlify.app](https://ubiquitous-dango-feef0b.netlify.app)**
