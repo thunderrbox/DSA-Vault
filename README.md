@@ -7,14 +7,14 @@
 
 DSA-Vault is a high-performance, automated publishing engine and educational coding notebook designed to showcase a continuous journal of software engineering problem-solving. It dynamically synchronizes solutions from a GitHub repository (`LeetCode`) and renders them in a state-of-the-art, fully searchable database portfolio.
 
-Live Production URL: **[https://ubiquitous-dango-feef0b.netlify.app](https://ubiquitous-dango-feef0b.netlify.app)**
+Live Production URL: **[https://dsa-vault-alpha.vercel.app](https://dsa-vault-alpha.vercel.app)**
 
 ---
 
 ## 🌟 Key Features
 
 * **⚡ Real-Time Synchronizer Webhook**: Instantly ingests new solution pushes from GitHub, parsing Markdown descriptions, mapping complexity difficulty, and compiling code content into a Neon PostgreSQL database.
-* **🌀 Instant Next.js Cache Revalidation**: Webhook triggers automatic Next.js `revalidatePath()` calls to immediately clear page caches on ingestion, making new solutions visible instantly.
+* **🌀 Next.js Cache Revalidation**: Webhook triggers automatic Next.js `revalidatePath()` calls to immediately clear page caches on ingestion, making new solutions visible instantly.
 * **🎨 Premium UI/UX Design System**: High-contrast, responsive visual interface featuring custom radial gradients, glassmorphism cards, interactive difficulty indicators, and modern pill-style navigation.
 * **🏷️ Smart DSA Filters**: Categorize, sort, and search problems by name, topic tags, or exact LeetCode problem numbers (supports `#` prefixes).
 * **💻 Dynamic Language Support**: Automatic detection and selection tabs for C++, Java, Python, and SQL with custom server-side Shiki syntax highlighting.
@@ -57,7 +57,7 @@ NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-jwt-auth-secret-key"
 SYNC_SECRET="your-shared-webhook-secret-hmac-key"
 GITHUB_REPOSITORY="thunderrbox/LeetCode"
-NEXT_PUBLIC_SITE_URL="https://ubiquitous-dango-feef0b.netlify.app"
+NEXT_PUBLIC_SITE_URL="https://dsa-vault-alpha.vercel.app"
 GOOGLE_CLIENT_ID="your-google-oauth-client-id"
 GOOGLE_CLIENT_SECRET="your-google-oauth-client-secret"
 ```
