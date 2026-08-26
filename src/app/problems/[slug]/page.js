@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ubiquitous-dango-feef0b.netlify.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dsa-vault-alpha.vercel.app";
   const absoluteUrl = `${baseUrl}/problems/${problem.slug}`;
   const title = `${problem.title} — LeetCode #${problem.problemNumber} Solution | Abhijeet`;
   const description = `Detailed explanation, complexity analysis, and optimized C++/Java/Python/SQL source code solution for LeetCode #${problem.problemNumber}: ${problem.title}.`;
@@ -114,7 +114,7 @@ export default async function ProblemDetailPage({ params }) {
   );
 
   // 5. Generate JSON-LD Structured Data Schema
-  const finalBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ubiquitous-dango-feef0b.netlify.app";
+  const finalBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dsa-vault-alpha.vercel.app";
   const absoluteUrl = `${finalBaseUrl}/problems/${problem.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",

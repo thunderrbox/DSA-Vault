@@ -1,5 +1,5 @@
 export default function robots() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ubiquitous-dango-feef0b.netlify.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dsa-vault-alpha.vercel.app";
 
   return {
     rules: {

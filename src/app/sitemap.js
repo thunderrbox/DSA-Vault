@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 export const revalidate = 3600; // Cache sitemap for 1 hour
 
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ubiquitous-dango-feef0b.netlify.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dsa-vault-alpha.vercel.app";
 
   // Static routes
   const staticRoutes = ["", "/problems", "/topics", "/stats", "/about"].map((route) => ({
