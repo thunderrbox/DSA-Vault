@@ -32,12 +32,17 @@ def main():
         sys.exit(1)
 
     # 1. Identify changed files in the latest commit
-    parent = run_cmd(["git", "rev-parse", "HEAD~1"])
-    if not parent:
-        # Fallback to compare against empty tree
+    sync_all = os.environ.get("SYNC_ALL", "false").lower() == "true"
+    if sync_all:
+        print("Forcing full sync: comparing against empty tree.")
         parent = "4b825dc642cb6eb9a0ff12f406d9b6140407155e"
     else:
-        parent = "HEAD~1"
+        parent = run_cmd(["git", "rev-parse", "HEAD~1"])
+        if not parent:
+            # Fallback to compare against empty tree
+            parent = "4b825dc642cb6eb9a0ff12f406d9b6140407155e"
+        else:
+            parent = "HEAD~1"
 
     diff_output = run_cmd(["git", "diff-tree", "-r", "--no-commit-id", "--name-status", parent, "HEAD"])
     if not diff_output:
